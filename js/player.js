@@ -1,17 +1,26 @@
-class Player {
+class Player extends Entity {
     constructor() {
-        this.x = 0
-        this.y = 0
-        this.step = 2
-        this.size = 50
+        super()
+
+        this.x = 150
+        this.y = 100
+        this.width = 47
+        this.height = 47
+        this.damage = 5
+        this.hp = 10000
+        this.points = 0
+
         this.keyboard = {left: false, right: false, up: false, down: false}
         this.attacking = false
 
         this.spriteController = new SpriteController({
             url: 'assets/player/player.png',
+            width: this.width,
+            height: this.height,
             framesX: { idle: 0, run: 5, attack: 3 },
             framesY: { idle: 0, run: 1, attack: 2 },
         })
+
         this.events()
     }
 
@@ -24,12 +33,12 @@ class Player {
 
         // basic wall collision
         if (this.x <= 0) this.x = 0
-        if ((this.x + this.size) >= engine.canvas.width) 
-            this.x = engine.canvas.width - this.size
+        if ((this.x + this.width) >= engine.canvas.width) 
+            this.x = engine.canvas.width - this.width
         
         if (this.y <= 0) this.y = 0
-        if ((this.y + this.size) >= engine.canvas.height) 
-            this.y = engine.canvas.height - this.size
+        if ((this.y + this.height) >= engine.canvas.height) 
+            this.y = engine.canvas.height - this.height
 
         // player keyboard events
         if (this.keyboard.left) this.x -= this.step
@@ -51,6 +60,10 @@ class Player {
             this.spriteController.animation = 'attack'
         }
 
+        document.getElementById('hp').innerText = `HP: ${(this.hp * 100 / 10000).toFixed(0)}%`;
+        document.getElementById('points').innerText = `Points: ${this.points}`;
+        document.getElementById('monsters').innerText = `HP: ${NPC_LIST.length}`;
+
         this.draw(engine)
     }
 
@@ -65,9 +78,11 @@ class Player {
 
     pressAttack(e) {
         this.attacking = true
+        this.spriteController.col = 0
     }
     releaseAttack(e) {
         this.attacking = false
+        this.spriteController.col = 0
     }
 
     press(e) {

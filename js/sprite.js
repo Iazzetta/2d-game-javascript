@@ -5,8 +5,8 @@ class SpriteController {
         this.framesY = config.framesY
 
         this.animation = 'idle'
-        this.frameWidth = 47
-        this.frameHeight = 50
+        this.frameWidth = config.width
+        this.frameHeight = config.height
         this.col = this.framesX[this.animation]
         this.row = this.framesY[this.animation]
 
@@ -35,10 +35,16 @@ class SpriteController {
             this.row * this.frameHeight,
             this.frameWidth,
             this.frameHeight,
-            entity.x,
-            entity.y,
-            this.frameWidth,
-            this.frameHeight
+            entity.x - entity.width,
+            entity.y - entity.height,
+            this.frameWidth + entity.width,
+            this.frameHeight + entity.height
         )
+        // engine.ctx.strokeRect(
+        //     entity.x - entity.width, 
+        //     entity.y - entity.height, 
+        //     this.frameWidth + (entity.width ), 
+        //     this.frameHeight + (entity.height )
+        // );
     }
 }
