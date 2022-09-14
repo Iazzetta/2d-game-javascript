@@ -23,3 +23,12 @@ Cada video terá sua própria branch para ficar organizado.
 - Componentizando Entity e usando no Player
 - Criando NPC que detecta o player proximo e ataca
 - Ataque do player nos NPCs
+
+
+### use
+```
+    python -m http.server 3001
+    or
+    python3 -m http.server 3001
+```
+access: http://localhost:3001
