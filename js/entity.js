@@ -30,15 +30,15 @@ class Entity {
             else
                 this.engine.ctx.fillStyle = '#f44336'
 
-            const variationX = Math.ceil(Math.random() * 2) * (Math.round(Math.random()) ? 1 : -1)
-            const variationY = Math.ceil(Math.random() * 2) * (Math.round(Math.random()) ? 1 : -1)
+            // const variationX = Math.ceil(Math.random() * 2) * (Math.round(Math.random()) ? 1 : -1)
+
             this.engine.ctx.font = 'bold 30px serif';
             this.engine.ctx.shadowColor = 'black';
             this.engine.ctx.shadowOffsetX = 1;
             this.engine.ctx.shadowOffsetY = 1;
             this.engine.ctx.strokeStyle = 'blue';
-            this.engine.ctx.strokeText(`-${this.hitted}`, this.x + variationX, (this.y - 10) + variationY);
-            this.engine.ctx.fillText(`-${this.hitted}`, this.x + variationX, (this.y - 10) + variationY)
+            this.engine.ctx.strokeText(`-${this.hitted}`, this.x /*+ variationX*/, (this.y - 10));
+            this.engine.ctx.fillText(`-${this.hitted}`, this.x/* + variationX*/, (this.y - 10))
         }
     }
 
