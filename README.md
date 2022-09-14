@@ -27,8 +27,10 @@ Cada video terá sua própria branch para ficar organizado.
 
 ### use
 ```
-    python -m http.server 3001
-    or
-    python3 -m http.server 3001
+    (Python 2)
+        python -m SimpleHTTPServer 3001
+    
+    (Python 3)
+        python -m http.server 3001
 ```
 access: http://localhost:3001
