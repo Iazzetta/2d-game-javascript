@@ -1,38 +1,44 @@
 class NPC extends Entity {
-    constructor(x, y) {
-        super()
+    constructor(engine, x, y, slug='slime') {
+        super(engine, slug)
 
         this.x = x
         this.y = y
-        this.hp = 2
+        this.hp = 5
         this.width = 32
         this.height = 32
-        this.step = 1
+        this.damage = 2
+        this.step = .5
 
         this.spriteController = new SpriteController({
-            url: 'assets/npc/slime.png',
+            url: `assets/npc/${slug}.png`,
+            slug: slug,
             width: this.width,
             height: this.height,
-            framesX: { idle: 0, run: 5, attack: 6 },
-            framesY: { idle: 0, run: 1, attack: 2 },
+            framesX: { idle: 0, run: 5, attack: 6, die: 4},
+            framesY: { idle: 0, run: 1, attack: 2, die: 4},
         })
 
         this.spriteController.animation = 'run'
     }
 
-    draw(engine) {
-        engine.ctx.beginPath()
-        this.spriteController.draw(engine, this)
+    draw() {
+        this.superDraw()
     }
 
-    update(engine) {
-        if (this.attacking) {
-            this.spriteController.animation = 'attack'
-        } else {
-            this.spriteController.animation = 'run'
+    update() {
+
+        this.updateSuper()
+
+        if (this.spriteController.animation != 'die') {
+            if (this.attacking) {
+                this.spriteController.animation = 'attack'
+            } else {
+                this.spriteController.animation = 'run'
+            }
+            this.follow(PLAYER_LIST[0])
         }
-        this.follow(engine.player)
-        this.draw(engine)
+        this.draw()
     }
 
     follow(player) {

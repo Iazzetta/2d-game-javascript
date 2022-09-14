@@ -2,6 +2,8 @@ class CollisionController {
     constructor() {}
 
     resolveCollision(A, B) {
+        if (!A || !B) return
+
         // get the vectors to check against
         var vX = (A.x + (A.width / 2))  - (B.x + (B.width / 2)),
         vY = (A.y + (A.height / 2)) - (B.y + (B.height / 2)),
@@ -9,7 +11,7 @@ class CollisionController {
         ww2 = (A.width / 2) + (B.width / 2),
         hh2 = (A.height / 2) + (B.height / 2);
 
-        let verify = false
+        let collided = false
 
         // if the x and y vector are less than the half width or half height,
         // they we must be inside the object, causing a collision
@@ -18,36 +20,27 @@ class CollisionController {
             var oX = ww2 - Math.abs(vX),
             oY = hh2 - Math.abs(vY);
             if (oX >= oY) {
-                if (vY > 0) {
+                if (vY >= 0) {
                     A.y += oY;
-                    verify = true
+                    collided = true
                 } else {
                     A.y -= oY;
-                    verify = true
+                    collided = true
                 }
             } else {
-                if (vX > 0) {
+                if (vX >= 0) {
                     A.x += oX;
-                    verify = true
+                    collided = true
                 } else {
                     A.x -= oX;
-                    verify = true
+                    collided = true
                 }
             }
         }
 
-        if (verify) {
-            if (A.attacking) B.hp -= A.damage
-            if (B.attacking) A.hp -= B.damage
-
-            if (A.hp <= 0) {
-                alert("GAME OVER!")
-                window.location.reload()
-            }
-            if (B.hp <= 0) { 
-                B.die = true
-                A.points += 1
-            }
+        if (collided) {
+            if (A.attacking) A.applyDamage(B)
+            if (B.attacking) B.applyDamage(A)
         }
 
     }

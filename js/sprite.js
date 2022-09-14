@@ -1,22 +1,43 @@
+class GameCache {
+    constructor() {
+        this.cached_images = {}
+    }
+
+    async get(slug, url) {
+        let image = null;
+        if (slug in this.cached_images) {
+            image = this.cached_images[slug]
+        } else {
+            let image = new Image()
+            await new Promise(r => image.onload = r, image.src = url)
+            this.cached_images[slug] = image
+        }
+        return this.cached_images[slug]
+    }
+    
+}
+
+const gCache = new GameCache()
+
 class SpriteController {
     constructor(config) {
         this.url = config.url
         this.framesX = config.framesX
         this.framesY = config.framesY
-
-        this.animation = 'idle'
         this.frameWidth = config.width
         this.frameHeight = config.height
+        this.slug = config.slug
+        this.cached_images = {}
+
+        this.animation = 'idle'
         this.col = this.framesX[this.animation]
         this.row = this.framesY[this.animation]
-
-        this.image = new Image()
 
         this.load()
     }
 
     async load() {
-        await new Promise(r => this.image.onload = r, this.image.src = this.url)
+        this.image = await gCache.get(this.slug, this.url)
         this.loop()
     }
 
@@ -29,6 +50,7 @@ class SpriteController {
     }
 
     draw(engine, entity) {
+        if (!this.image) return;
         engine.ctx.drawImage(
             this.image,
             this.col * this.frameWidth,
